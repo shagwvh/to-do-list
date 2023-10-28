@@ -4,6 +4,7 @@ const cors = require('cors');
 const index = require('./routes/index');
 const userRoute = require('./routes/user');
 const bodyParser = require('body-parser');
+const taskRoute = require('./routes/taskRoute');
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,8 @@ app.use(bodyParser.json());
 
 app.use('/', index);
 app.use('/user', userRoute);
+app.use('/task', taskRoute);
+
 
 // // catch 404 and forward to error handler
 app.use((req, res, next) => {

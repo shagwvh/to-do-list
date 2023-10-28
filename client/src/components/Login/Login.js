@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { login, signup } from "../services/auth";
+import { login, signup } from "../../services/auth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import './Login.css'
 const Login = () => {
   const [signUpPage, setSignUpPage] = useState(false);
   const [userName, setUserName] = useState(null);
