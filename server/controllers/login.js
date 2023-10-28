@@ -57,7 +57,10 @@ exports.processLogin = (userName, password) => {
                 // Check the password
                 const passwordMatch = await bcrypt.compare(password, data.password);
                 if (!passwordMatch) {
-                    return Promise.reject('Invalid credentials')
+                    return {
+                        errorMessage:'Invalid Credentails',
+                        message:'error'
+                    };
                 }
                 console.log('password matched')
                 const authToken = jwt.sign({ id: data.userId }, 'secret_key', { expiresIn: '1h' });

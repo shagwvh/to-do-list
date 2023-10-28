@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { login } from '../services/auth';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [signUpPage, setSignUpPage] = useState(false);
@@ -6,17 +9,29 @@ const Login = () => {
   const [password, setPassword] = useState(null);
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
+  const history = useNavigate();
 
   const handleSignUpButton = (value) => {
     setSignUpPage(value);
   };
 
-  useEffect(()=>{
-    setUserName('');
-    setEmail('');
-    setPassword('');
-    setName('');
-  },[])
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    if(!(userName)){
+        toast.error('Please enter your username!');
+        return;
+    }else if(!password){
+        toast.error('Please enter your password!');
+        return;
+    }
+    const data = await login(userName, password);
+    if(data){
+        toast.success('User login successfully!');
+        history('/homepage')
+    }
+
+    console.log(data);
+  }
 
   return (
         <div className={signUpPage ? 'container sign-up-mode' : 'container'}>
@@ -32,7 +47,7 @@ const Login = () => {
                             <i className="fas fa-lock"></i>
                             <input type="text" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)}  required/>
                         </div>
-                        <button className="btn solid">Login</button>
+                        <button className="btn solid" onClick={(e)=>handleLogin(e)}>Login</button>
                     </form>
     
                     <form action="" className="sign-up-form">
