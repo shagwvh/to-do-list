@@ -96,12 +96,12 @@ exports.requestToSignUpUser = (req, res) => {
         .then(async ([ result ]) => {
             if (result.length) {
                 // fetching user data
-                return res.status(400).json({ message: 'User name already exists' });
+                return res.status(201).json({ message: 'User name already exists' });
             }else{
                 // Hash the password
                 const hashedPassword = await bcrypt.hash(password, 10);
                 await insertNewUser(userName, email, hashedPassword, name);
-                return res.status(201).json({ message: 'User created successfully' });
+                return res.status(200).json({ message: 'User created successfully' });
             }
         })
         .catch((err) => {
