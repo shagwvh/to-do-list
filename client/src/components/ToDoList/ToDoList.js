@@ -9,6 +9,7 @@ import "./ToDoList.css";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import { useNavigate } from "react-router-dom";
+import Header from "../Header/Header";
 
 
 const TaskFilter = ({ filter, setFilter }) => {
@@ -86,7 +87,7 @@ const ToDoList = () => {
 
   return (
     <div style={{ width: "80%", margin: "auto" }}>
-      <h1>Task Manager</h1>
+      <Header/>
       <div className="to-do-card">
         <TaskForm addTask={addTask} />
         <TaskFilter filter={filter} setFilter={setFilter} />

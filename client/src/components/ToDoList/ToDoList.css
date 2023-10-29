@@ -100,6 +100,7 @@ body {
         justify-content: space-between;
         flex-direction: column;
         align-items: center;
+        margin-top: 40px;
       }
   }
 
@@ -107,7 +108,8 @@ body {
   .to-do-card{
     display: flex;
     justify-content: space-between;
-  }
+    margin-top: 40px;
+}
 
   
 
