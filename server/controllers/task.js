@@ -38,8 +38,9 @@ exports.deleteTask = (req, res) =>{
 
 exports.fetchTasks = (req, res) => {
     const userId = req.userId;
-    console.log(userId, "fetchTasks");
-    return fetchAllTask(userId)
+    const sortBy = req.query.sortBy;
+    console.log(userId,sortBy,  "fetchTasks");
+    return fetchAllTask(userId, sortBy)
       .then(async ([result]) => {
           console.log(result);
           return res.status(200).json({ message: "success",result });

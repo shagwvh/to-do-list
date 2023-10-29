@@ -63,7 +63,7 @@ export function deleteTask(taskId) {
     });
 }
 
-export function fetchAllTasks() {
+export function fetchAllTasks(sortBy) {
   const authToken = localStorage.getItem("token");
   const refreshToken = localStorage.getItem("refreshtoken");
   const headers = {
@@ -71,7 +71,7 @@ export function fetchAllTasks() {
     refreshToken:refreshToken,
   };
   return axios
-    .get(`http://localhost:5001/task/to-do-list`, {
+    .get(`http://localhost:5001/task/to-do-list?sortBy=${sortBy}`, {
       headers,
     })
     .then((response) => {

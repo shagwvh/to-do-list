@@ -174,16 +174,32 @@ const TaskFilter = ({ filter, setFilter }) => {
   );
 };
 
+const TaskSort = ({ sortBy, setSortBy }) => {
+    return (
+        <div>
+        <label>
+          Sort by:
+          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <option value="due_date">Date</option>
+            <option value="priority">Priority</option>
+            <option value="status">Status</option>
+          </select>
+        </label>
+      </div>
+    );
+  };
+
 const ToDoList = () => {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("All");
+  const [sortBy, setSortBy] = useState('due_date'); // Default sort by date
 
   useEffect(() => {
     fetchTask();
-  }, []);
+  }, [sortBy]);
 
   const fetchTask = async () => {
-    const data = await fetchAllTasks();
+    const data = await fetchAllTasks(sortBy);
     if (data && data.body) {
       console.log(data);
       setTasks(data.body.result);
@@ -211,8 +227,9 @@ const ToDoList = () => {
     fetchTask();
   };
 
-  const filteredTasks =
-    filter === "All" ? tasks : tasks.filter((task) => task.status === filter);
+  const filteredAndSortedTasks = 
+    filter === 'All' ? tasks : tasks.filter((task) => task.status === filter);
+
 
   const getNextStatus = (currentStatus) => {
     switch (currentStatus) {
@@ -233,10 +250,11 @@ const ToDoList = () => {
       <div className="to-do-card">
         <TaskForm addTask={addTask} />
         <TaskFilter filter={filter} setFilter={setFilter} />
+        <TaskSort sortBy={sortBy} setSortBy={setSortBy}/>
       </div>
 
       <TaskList
-        tasks={filteredTasks}
+        tasks={filteredAndSortedTasks}
         updateTask={updateTask}
         deleteTask={deleteTask}
       />
