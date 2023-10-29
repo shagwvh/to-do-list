@@ -25,6 +25,11 @@ exports.deleteTask = (taskId) => {
   return pool.query(query, [taskId]);
 };
 
+exports.updateTask = (taskId, status) => {
+    const query = `UPDATE to_do_tasks SET status = ? WHERE id = ?;`;
+    return pool.query(query, [status, taskId]);
+  };
+
 exports.fetchAllTask = (userId, orderBy) => {
   // Define valid columns for ordering to prevent SQL injection
   const validColumns = [

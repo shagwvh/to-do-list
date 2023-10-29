@@ -1,7 +1,7 @@
 const { checkUserExists, insertNewUser } = require("../connections/loginDb");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { insertNewTask, fetchAllTask, deleteTask } = require("../connections/taskDb");
+const { insertNewTask, fetchAllTask, deleteTask, updateTask } = require("../connections/taskDb");
 
 exports.addTaskToList = (req, res) => {
   const title = req.body.title;
@@ -30,6 +30,18 @@ exports.deleteTask = (req, res) =>{
     .then(async ([result]) => {
         console.log(result);
         return res.status(200).json({ message: "Task Deleted Successfully" });
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
+exports.updateTask = (req, res) =>{
+    const { taskId, status } = req.body;
+    return updateTask(taskId, status)
+    .then(async ([result]) => {
+        console.log(result);
+        return res.status(200).json({ message: "Task Updated Successfully" });
     })
     .catch((err) => {
       return Promise.reject(err);

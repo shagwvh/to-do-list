@@ -124,7 +124,7 @@ body {
   
   /* .todolist-table tr:nth-child(even){background-color: #f2f2f2;} */
   
-  .todolist-table tr:hover {background-color: #ddd;}
+  /* .todolist-table tr:hover {background-color: #ddd;} */
   
   .todolist-table th {
     padding-top: 12px;

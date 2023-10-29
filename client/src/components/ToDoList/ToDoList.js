@@ -6,6 +6,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import {
   addTask as addTaskService,
   deleteTask as deleteTaskService,
+  updateTask as updateTaskService,
   fetchAllTasks,
 } from "../../services/task";
 import "./ToDoList.css";
@@ -143,9 +144,16 @@ const TaskList = ({ tasks, updateTask, deleteTask }) => {
               <Td> {task.priority}</Td>
               <Td> {task.dueDate}</Td>
               <Td>
-                <button onClick={() => updateTask(task.id)}>
-                  Update Status
-                </button>
+              <label>
+              <select
+                value={task.status}
+                onChange={(e) => updateTask(task.id,e.target.value)}
+              >
+                <option value="To Do">To Do</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+              </select>
+            </label>
               </Td>
               <Td>
                 <button onClick={() => deleteTask(task.id)}>Delete</button>
@@ -212,14 +220,10 @@ const ToDoList = () => {
     fetchTask();
   };
 
-  const updateTask = (taskId) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId
-          ? { ...task, status: getNextStatus(task.status) }
-          : task
-      )
-    );
+  const updateTask = async (taskId, status) => {
+    console.log(taskId, status, "updateTask");
+    await updateTaskService(taskId, status)
+    fetchTask();
   };
 
   const deleteTask = async (taskId) => {
