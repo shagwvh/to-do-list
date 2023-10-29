@@ -135,7 +135,7 @@ const TaskList = ({ tasks, updateTask, deleteTask }) => {
               <Td>
                 <strong>{task.title}</strong>
               </Td>
-              <Td>
+              <Td title={task.description}>
                 {task.description.length > 14
                   ? task.description.slice(0, 14) + "..."
                   : task.description}
