@@ -10,8 +10,10 @@ export function login(userName,password) {
       .then((response) => {
         console.log(response);
         if (response && response.status === 200) {
-          const authToken = response.headers.authorization
+          const authToken = response.headers.authorization;
+          const refreshToken = response.data.refreshToken;
           localStorage.setItem('token', authToken);
+          localStorage.setItem('refreshtoken', refreshToken);
           return {
             body: response.data,
             headers: response.headers,

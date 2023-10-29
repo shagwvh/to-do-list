@@ -1,10 +1,14 @@
 const express = require('express');
 const { verifyToken } = require('../middlewares');
-const { addTaskToList } = require('../controllers/task');
+const { addTaskToList, fetchTasks } = require('../controllers/task');
 
 const router = express.Router();
 
-// signUp route
+
+// get all task for user
+router.get('/to-do-list',verifyToken, fetchTasks);
+
+// add tak route
 router.post('/add',verifyToken, addTaskToList);
 
 // // Login route

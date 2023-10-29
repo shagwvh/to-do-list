@@ -23,7 +23,8 @@ exports.requestToLogin = (req, res, next) => {
                     message: 'success',
                     email: response.data.email,
                     name: response.data.name,
-                    authToken: response.authToken
+                    authToken: response.authToken,
+                    refreshToken:response.refreshToken
                 };
                 res.json(finalResponse);
             } else {
@@ -64,9 +65,11 @@ exports.processLogin = (userName, password) => {
                 }
                 console.log('password matched')
                 const authToken = jwt.sign({ id: data.userId }, 'secret_key', { expiresIn: '1h' });
+                const refreshToken = jwt.sign({ id: data.userId }, 'refresh_secret_key', { expiresIn: '7d' });
                 console.log(authToken);
                 return {
                     authToken,
+                    refreshToken,
                     data,
                     message:'success'
                 };

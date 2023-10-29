@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ToDoList.css";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { DatePicker } from "antd";
-import {addTask as addTaskService} from '../../services/task'
+import {addTask as addTaskService, fetchAllTasks} from '../../services/task'
 const TaskForm = ({ addTask }) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -39,7 +39,7 @@ const TaskForm = ({ addTask }) => {
   return (
     <div>
       <Button color="danger" onClick={toggle}>
-        Click Me
+        Add New Task
       </Button>
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader close={closeBtn}>
@@ -77,9 +77,9 @@ const TaskForm = ({ addTask }) => {
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
-                <option value="Low">Low</option>
-                <option value="Medium"> Medium</option>
-                <option value="High">High</option>
+                <option value="low">Low</option>
+                <option value="medium"> Medium</option>
+                <option value="high">High</option>
               </select>
             </label>
             <label>
@@ -165,6 +165,15 @@ const TaskFilter = ({ filter, setFilter }) => {
 const ToDoList = () => {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("All");
+
+
+  useEffect(()=>{
+    fetchTask()
+  },[])
+
+  const fetchTask = async() => {
+    await fetchAllTasks()
+  }
 
   const addTask = async (task) => {
     console.log(task,'addtask');
