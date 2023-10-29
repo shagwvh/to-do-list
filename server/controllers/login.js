@@ -86,28 +86,35 @@ exports.processLogin = (userName, password) => {
         });
 };
 
-exports.requestToSignUpUser = (req, res) => {
-    const userName = req.body.userName;
-    const email = req.body.email;
-    const password = req.body.password;
-    const name = req.body.name;
-    if(!userName || !email || !password || !name){
-        return res.status(400).json({ message: 'Invalid Data!' });
+exports.requestToSignUpUser = async (req, res) => {
+  try {
+    // Extracting user signup data from the request body
+    const { userName, email, password, name } = req.body;
+
+    // Validating input data
+    if (!userName || !email || !password || !name) {
+      return res.status(400).json({ message: 'Invalid Data!' });
     }
-    console.log(userName, email, password, name, 'user signup data');
-    return checkUserExists(userName)
-        .then(async ([ result ]) => {
-            if (result.length) {
-                // fetching user data
-                return res.status(201).json({ message: 'User name already exists' });
-            }else{
-                // Hash the password
-                const hashedPassword = await bcrypt.hash(password, 10);
-                await insertNewUser(userName, email, hashedPassword, name);
-                return res.status(200).json({ message: 'User created successfully' });
-            }
-        })
-        .catch((err) => {
-            return Promise.reject(err);
-        });
+
+    // Checking if the username already exists
+    const [existingUser] = await checkUserExists(userName);
+
+    if (existingUser.length) {
+      // If username already exists, send a response
+      return res.status(201).json({ message: 'User name already exists' });
+    }
+
+    // Hashing the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Inserting a new user into the database
+    await insertNewUser(userName, email, hashedPassword, name);
+
+    // Sending a success response for user creation
+    return res.status(200).json({ message: 'User created successfully' });
+  } catch (error) {
+    // Handling errors and sending an appropriate error response
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
 };

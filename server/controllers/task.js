@@ -1,6 +1,3 @@
-const { checkUserExists, insertNewUser } = require("../connections/loginDb");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const {
   insertNewTask,
   fetchAllTask,
