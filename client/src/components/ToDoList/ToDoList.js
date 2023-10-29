@@ -130,7 +130,7 @@ const TaskList = ({ tasks, updateTask, deleteTask }) => {
         </Thead>
         <Tbody>
           {tasks.map((task) => (
-            <Tr key={task.id}>
+            <Tr key={task.id} className={task.status === "To Do" ? 'to-do' : task.status === "In Progress" ? 'in-progress' : 'done'}            >
               <Td>
                 <strong>{task.title}</strong>
               </Td>

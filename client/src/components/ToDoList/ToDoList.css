@@ -122,7 +122,7 @@ body {
     padding: 8px;
   }
   
-  .todolist-table tr:nth-child(even){background-color: #f2f2f2;}
+  /* .todolist-table tr:nth-child(even){background-color: #f2f2f2;} */
   
   .todolist-table tr:hover {background-color: #ddd;}
   
@@ -137,3 +137,15 @@ body {
   .ant-picker{
     display: block;
   }
+
+  tr.done {
+    background-color: #b6e7b6; /* Light green for "Done" */
+}
+
+tr.in-progress {
+    background-color: #fff5cc; /* Light yellow for "In Progress" */
+}
+
+tr.to-do {
+    background-color: #ffcccc; /* Light red for "To Do" */
+}
