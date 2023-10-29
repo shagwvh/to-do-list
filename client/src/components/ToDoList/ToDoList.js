@@ -8,6 +8,7 @@ import {
 import "./ToDoList.css";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
+import { useNavigate } from "react-router-dom";
 
 
 const TaskFilter = ({ filter, setFilter }) => {
@@ -42,12 +43,17 @@ const TaskSort = ({ sortBy, setSortBy }) => {
   };
 
 const ToDoList = () => {
+    const history = useNavigate()
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("All");
   const [sortBy, setSortBy] = useState('due_date'); // Default sort by date
 
   useEffect(() => {
     fetchTask();
+    const token = localStorage.getItem('token');
+    if(!token){
+        history('/');
+    }
   }, [sortBy]);
 
   const fetchTask = async () => {

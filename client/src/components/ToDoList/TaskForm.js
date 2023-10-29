@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { DatePicker } from "antd";
+import moment from 'moment';
 
 const TaskForm = ({ addTask }) => {
     const [modal, setModal] = useState(false);
@@ -34,6 +35,10 @@ const TaskForm = ({ addTask }) => {
       setSelectedDate("");
       toggle();
     };
+
+    const disabledDate = current => {
+        return current && current < moment().startOf("day");
+      };
   
     return (
       <div>
@@ -65,6 +70,7 @@ const TaskForm = ({ addTask }) => {
                 Due Date:
                 <DatePicker
                   // value={selectedDate} // Set the value to the selectedDate state
+                  disabledDate={disabledDate}
                   onChange={handleDateChange} // Set the onChange handler to handleDateChange function
                 />{" "}
               </label>

@@ -1,6 +1,7 @@
 const { checkUserExists, insertNewUser } = require("../connections/loginDb");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const config= require('../config');
 
 exports.requestToLogin = (req, res, next) => {
     // data
@@ -64,8 +65,8 @@ exports.processLogin = (userName, password) => {
                     };
                 }
                 console.log('password matched')
-                const authToken = jwt.sign({ id: data.userId }, 'secret_key', { expiresIn: '1h' });
-                const refreshToken = jwt.sign({ id: data.userId }, 'refresh_secret_key', { expiresIn: '7d' });
+                const authToken = jwt.sign({ id: data.userId }, config.tokenSecretKey, { expiresIn: '24h' });
+                const refreshToken = jwt.sign({ id: data.userId }, config.refreshTokenSecretKey, { expiresIn: '7d' });
                 console.log(authToken);
                 return {
                     authToken,

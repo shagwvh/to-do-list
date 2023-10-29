@@ -16,6 +16,7 @@ body, input{
     min-height: 100vh;
     background-color: #fff;
     overflow: hidden;
+    max-width: 100% !important;
 }
 
 .container:before{

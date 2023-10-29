@@ -86,6 +86,7 @@ export function fetchAllTasks(sortBy) {
       console.error({ err }, "Error in endpoint");
       if (err.response.status == 401) {
         toast.error(err.response.data.errorMessage);
+        localStorage.setItem('token','');
       } else {
         toast.error("Something Went Wrong");
       }
