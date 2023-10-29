@@ -1,7 +1,7 @@
 const { checkUserExists, insertNewUser } = require("../connections/loginDb");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { insertNewTask, fetchAllTask } = require("../connections/taskDb");
+const { insertNewTask, fetchAllTask, deleteTask } = require("../connections/taskDb");
 
 exports.addTaskToList = (req, res) => {
   const title = req.body.title;
@@ -17,12 +17,24 @@ exports.addTaskToList = (req, res) => {
   return insertNewTask(title, description, priority, selectedDate, status, userId)
     .then(async ([result]) => {
         console.log(result);
-        return res.status(201).json({ message: "Task Added Successfully" });
+        return res.status(200).json({ message: "Task Added Successfully" });
     })
     .catch((err) => {
       return Promise.reject(err);
     });
 };
+
+exports.deleteTask = (req, res) =>{
+    const { taskId } = req.params;
+    return deleteTask(taskId)
+    .then(async ([result]) => {
+        console.log(result);
+        return res.status(200).json({ message: "Task Deleted Successfully" });
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
 
 exports.fetchTasks = (req, res) => {
     const userId = req.userId;
@@ -30,7 +42,7 @@ exports.fetchTasks = (req, res) => {
     return fetchAllTask(userId)
       .then(async ([result]) => {
           console.log(result);
-          return res.status(201).json({ message: "success",result });
+          return res.status(200).json({ message: "success",result });
       })
       .catch((err) => {
         return Promise.reject(err);

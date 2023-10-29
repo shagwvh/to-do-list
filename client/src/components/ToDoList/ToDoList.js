@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from "react";
-import "./ToDoList.css";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { DatePicker } from "antd";
-import {addTask as addTaskService, fetchAllTasks} from '../../services/task'
+import React, { useEffect, useState } from "react";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import {
+  addTask as addTaskService,
+  deleteTask as deleteTaskService,
+  fetchAllTasks,
+} from "../../services/task";
+import "./ToDoList.css";
 const TaskForm = ({ addTask }) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -16,13 +22,13 @@ const TaskForm = ({ addTask }) => {
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("To Do");
   const [priority, setPriority] = useState("Low");
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState("");
 
   // Handler for date change
   const handleDateChange = (value, dateString) => {
-    console.log('Selected Time: ', value);
-    console.log('Formatted Selected Time: ', dateString);
-    setSelectedDate(dateString)
+    console.log("Selected Time: ", value);
+    console.log("Formatted Selected Time: ", dateString);
+    setSelectedDate(dateString);
   };
 
   const handleSubmit = (e) => {
@@ -31,9 +37,9 @@ const TaskForm = ({ addTask }) => {
     setTitle("");
     setDescription("");
     setStatus("To Do");
-    setPriority('Low');
-    setSelectedDate('');
-    toggle()
+    setPriority("Low");
+    setSelectedDate("");
+    toggle();
   };
 
   return (
@@ -42,9 +48,7 @@ const TaskForm = ({ addTask }) => {
         Add New Task
       </Button>
       <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader close={closeBtn}>
-          Add Task
-        </ModalHeader>
+        <ModalHeader close={closeBtn}>Add Task</ModalHeader>
         <ModalBody>
           <form>
             <label>
@@ -74,8 +78,8 @@ const TaskForm = ({ addTask }) => {
             <label>
               Priority of Task:
               <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
               >
                 <option value="low">Low</option>
                 <option value="medium"> Medium</option>
@@ -85,8 +89,8 @@ const TaskForm = ({ addTask }) => {
             <label>
               Status:
               <select
-                value={priority}
-                onChange={(e) => setPriority(e.target.value)}
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
               >
                 <option value="To Do">To Do</option>
                 <option value="In Progress">In Progress</option>
@@ -96,7 +100,7 @@ const TaskForm = ({ addTask }) => {
           </form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={(e)=>handleSubmit(e)}>
+          <Button color="primary" onClick={(e) => handleSubmit(e)}>
             Add Task
           </Button>{" "}
           <Button color="secondary" onClick={toggle}>
@@ -109,40 +113,48 @@ const TaskForm = ({ addTask }) => {
 };
 
 const TaskList = ({ tasks, updateTask, deleteTask }) => {
-    console.log(tasks)
+  console.log(tasks, "tasks");
   return (
-    <table className="todolist-table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Status</th>
-          <th>Priority</th>
-          <th>Due Date</th>
-          <th>Update Status</th>
-          <th>Delete Task</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tasks.map((task) => (
-          <tr key={task.id}>
-            <td>
-              <strong>{task.title}</strong>
-            </td>
-            <td>{task.description}</td>
-            <td> {task.status}</td>
-            <td> {task.priority}</td>
-            <td> {task.selectedDate}</td>
-            <td>
-              <button onClick={() => updateTask(task.id)}>Update Status</button>
-            </td>
-            <td>
-              <button onClick={() => deleteTask(task.id)}>Delete</button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+      <Table className="todolist-table">
+        <Thead>
+          <Tr>
+            <Th>Title</Th>
+            <Th>Description</Th>
+            <Th>Status</Th>
+            <Th>Priority</Th>
+            <Th>Due Date</Th>
+            <Th>Update Status</Th>
+            <Th>Delete Task</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {tasks.map((task) => (
+            <Tr key={task.id}>
+              <Td>
+                <strong>{task.title}</strong>
+              </Td>
+              <Td>
+                {task.description.length > 14
+                  ? task.description.slice(0, 14) + "..."
+                  : task.description}
+              </Td>
+              <Td> {task.status}</Td>
+              <Td> {task.priority}</Td>
+              <Td> {task.dueDate}</Td>
+              <Td>
+                <button onClick={() => updateTask(task.id)}>
+                  Update Status
+                </button>
+              </Td>
+              <Td>
+                <button onClick={() => deleteTask(task.id)}>Delete</button>
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    </div>
   );
 };
 
@@ -166,19 +178,22 @@ const ToDoList = () => {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("All");
 
+  useEffect(() => {
+    fetchTask();
+  }, []);
 
-  useEffect(()=>{
-    fetchTask()
-  },[])
-
-  const fetchTask = async() => {
-    await fetchAllTasks()
-  }
+  const fetchTask = async () => {
+    const data = await fetchAllTasks();
+    if (data && data.body) {
+      console.log(data);
+      setTasks(data.body.result);
+    }
+  };
 
   const addTask = async (task) => {
-    console.log(task,'addtask');
-    await addTaskService(task)
-    setTasks([...tasks, { ...task, id: tasks.length + 1 }]);
+    console.log(task, "addtask");
+    await addTaskService(task);
+    fetchTask();
   };
 
   const updateTask = (taskId) => {
@@ -191,8 +206,9 @@ const ToDoList = () => {
     );
   };
 
-  const deleteTask = (taskId) => {
-    setTasks(tasks.filter((task) => task.id !== taskId));
+  const deleteTask = async (taskId) => {
+    await deleteTaskService(taskId);
+    fetchTask();
   };
 
   const filteredTasks =
@@ -212,10 +228,13 @@ const ToDoList = () => {
   };
 
   return (
-    <div className="to-do-card">
+    <div style={{ width: "80%", margin: "auto" }}>
       <h1>Task Manager</h1>
-      <TaskForm addTask={addTask} />
-      <TaskFilter filter={filter} setFilter={setFilter} />
+      <div className="to-do-card">
+        <TaskForm addTask={addTask} />
+        <TaskFilter filter={filter} setFilter={setFilter} />
+      </div>
+
       <TaskList
         tasks={filteredTasks}
         updateTask={updateTask}

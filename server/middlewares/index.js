@@ -10,8 +10,9 @@ exports.verifyToken = (req, res, next) => {
   jwt.verify(token, 'secret_key', (err, decoded) => {
     if (err) {
       if (err.name === 'TokenExpiredError') {
-        // Token has expired, try to refresh
-        const refreshToken = req.headers['refreshToken'];
+        // Token has expired, try to refresh;
+        console.log(req.headers)
+        const refreshToken = req.headers['refreshtoken'];
 
         if (!refreshToken) {
           return res.status(401).json({ message: 'Refresh token not provided' });
