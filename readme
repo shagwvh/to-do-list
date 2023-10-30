@@ -1,0 +1,153 @@
+# Task Management Application
+
+This Task Management Application is designed to help users organize and keep track of their tasks efficiently. It includes both front-end and back-end components to provide a seamless experience.
+
+## Front-End
+
+### User Interface
+
+The user interface is designed to be intuitive and user-friendly, comprising the following components:
+
+1. **Task Creation Form:**
+   - Fields for Title, Description, Due Date, Priority of Task and Status of a task.
+   - Form validation ensures that tasks cannot be created without all the information given above.
+
+2. **Task List:**
+   - Displays a list of tasks.
+   - Allows users to update the status, delete a task, and sort tasks by date, status, or priority.
+   - Enables users to filter tasks by status (e.g., "All," "To Do," "In Progress," "Done").
+
+3. **Additional Features:**
+
+   - **Mobile Responsive Design:** Ensured that the application is designed to be fully responsive, providing an optimal user experience across various devices, including smartphones and tablets.
+
+   - **User Authentication and Authorization:** Implemented a robust user authentication system to secure the application. Users can create accounts, log in securely, and perform actions based on their account. Authorization mechanisms are in place to restrict access to specific tasks, ensuring data privacy and security.
+
+   - **Task Due Dates:** Introduced a task management system with due dates. Users can set deadlines for tasks. This feature enhances the productivity and organization of the application, helping users stay on top of their tasks.
+
+   - **Task Sorting:** Implemented a task sorting feature, allowing users to organize their tasks based on various criteria such as priority, due date, or project. This enables users to quickly prioritize and focus on the most critical tasks, contributing to a more efficient and personalized task management experience.
+
+   - **Toast Messages:** Integrated Toast Messages using react-toastify library to provide real-time feedback to users. Toast messages are used to communicate the success or failure of operations, enhancing the user experience by keeping them informed about the status of their actions.
+
+
+### Technologies Used
+
+- Front-end technologies: React .
+- Styling: Utilized the CSS for responsive design and ReactStrap library and Ant Design (antd) library for styling the button and forms. 
+- Responsive Design: Ensures compatibility with both desktop and mobile devices.
+
+## Back-End
+
+### API Development
+
+A RESTful API has been implemented to handle CRUD operations for tasks. The back-end is built using Node.js with the Express framework and utilizes SQL for data storage.
+
+### Technology Stack
+  - **Node.js with Express:** The back-end is powered by Node.js, and the Express framework is used to create a robust and efficient API. This choice provides a scalable and performant environment for handling HTTP requests.
+
+### Authentication and Authorization
+  - **jsonwebtoken Library:** Implemented the jsonwebtoken library to handle user authentication and authorization. This enables secure token-based authentication, ensuring that only authorized users can access and perform actions within the system.
+
+  - **bcrypt for Password Hashing:** Utilized the bcrypt library to securely hash user passwords before storing them in the database. This adds an extra layer of security to protect user credentials.
+
+### Data Storage
+  - **SQL Database:** The back-end is connected to an SQL database to store and manage task data. SQL databases provide a structured and relational approach to data storage, facilitating efficient querying and management.
+
+### Express Framework
+  - **Express:** Leveraged the Express framework to simplify the development of the API. Express provides a set of tools and features that streamline routing, middleware management, and handling HTTP requests, contributing to the overall efficiency of the back-end.
+
+### Validation and Error Handling
+
+- **Validation:**
+  - Server-side validation ensures task data is valid before saving to the database.
+  - Tasks must have a title and a valid status.
+
+- **Error Handling:**
+  - Proper handling of errors, including sending appropriate error messages and status codes in response.
+
+
+
+
+
+
+## Getting Started
+
+1. **Front-end Setup:**
+   - Clone the repository.  (git clone <repository_url>) 
+        <repository_url>: Replace this with the actual URL of your Git repository.
+   - Go to client folder and Install dependencies using (npm i) command. 
+   - After installing dependencies. Run the development server using this command (npm start).
+
+2. **Back-end Setup:**
+   - Navigate to the `backend` directory.
+   - Go to server folder and Install dependencies using (npm i) command. 
+   - Set up the database (For setting up the database go to third step first).
+   - After completing third step create a .env file in your backend folder.
+   - Go to .env.template file and copy all the contents and paste it into .env file.
+   - Open the .env.template file.
+   - Copy all its contents.
+   - Now, enter your database_name, password, and user_name in the .env file.
+   - In the newly created .env file, find the placeholders (e.g., DATABASE_NAME, PASSWORD, USER_NAME) and replace them with your actual database information.
+   - Save the changes in the .env file.
+   - Return to the terminal.
+   - Make sure you are in the "backend" directory.
+   - Start the back-end server using the appropriate command.
+
+3. **Set up the database:**
+    # Project Database Setup
+
+    This document provides instructions on setting up the MySQL database for the project.
+
+    1. **Open Command Prompt or Terminal:**
+    - On Windows, open the Command Prompt.
+    - On Linux or macOS, open the Terminal.
+
+    2. **Login to MySQL:**
+    mysql -u your_username -p.( if mysql is not installed please install mysql first).
+    Replace `your_username` with your MySQL username. Enter your password when prompted.
+
+    3. **Create a New Database:**
+    CREATE DATABASE your_database_name;
+    Replace `your_database_name` with the desired name for your database.
+
+    4. **Switch to the New Database:**
+    USE `your_database_name`;
+    This command instructs MySQL to use the specified database for subsequent operations.
+
+    5. **(Optional) Create Tables and Perform Other Operations:**
+    After creating the database, you need to create tables. Execute SQL commands directly in the MySQL command-line interface.
+    You need to create these two tables and your database will be setup.
+        1. First Table : 
+                create table to_do_tasks
+                (
+                    id          int auto_increment
+                        primary key,
+                    task_name   varchar(200)                                                    not null,
+                    description varchar(500)                                                    not null,
+                    priority    enum ('low', 'medium', 'high')                                  null,
+                    due_date    date                                                            null,
+                    user_id     int                                                             not null,
+                    status      enum ('To Do', 'In Progress', 'Done') default 'To Do'           not null,
+                    created_at  timestamp                             default CURRENT_TIMESTAMP not null,
+                    updated_at  timestamp                             default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
+                    deleted_at  timestamp                                                       null,
+                    constraint to_do_tasks_users_id_fk
+                        foreign key (user_id) references users (id)
+                );
+
+        2. Second Table 
+            create table users
+            (
+                id         int auto_increment
+                    primary key,
+                name       varchar(50)                         not null,
+                user_name  varchar(50)                         not null,
+                password   varchar(100)                        not null,
+                email      varchar(50)                         not null,
+                created_at timestamp default CURRENT_TIMESTAMP not null,
+                updated_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
+            );
+
+    Remember to replace `your_username` and `your_database_name` with your actual MySQL username and the desired name for your database.
+
+
