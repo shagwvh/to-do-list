@@ -1,7 +1,17 @@
-exports.host = 'localhost';
-exports.mysql_user = 'root';
-exports.mysql_password='Shashank@1230';
-exports.mysql_db = 'to_do_list';
-exports.connection_pool = 50;
-exports.refreshTokenSecretKey='JAGYS778BAHAH@%$11GG';
-exports.tokenSecretKey='SHSAH86#72728^$!^!&8AHHA'
+// config.js
+require('dotenv').config(); // Load environment variables from .env file
+
+const config = {
+  database: {
+    host: process.env.DB_HOST,
+    mysql_user: process.env.DB_USER,
+    mysql_password: process.env.DB_PASSWORD,
+    mysql_db: process.env.DB_NAME,
+  },
+  token: {
+    tokenSecretKey:process.env.DB_HOST,
+    refreshTokenSecretKey:process.env.DB_HOST,
+  }
+};
+
+module.exports = config;

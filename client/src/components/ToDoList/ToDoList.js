@@ -50,10 +50,11 @@ const ToDoList = () => {
   const [sortBy, setSortBy] = useState('due_date'); // Default sort by date
 
   useEffect(() => {
-    fetchTask();
     const token = localStorage.getItem('token');
     if(!token){
         history('/');
+    }else{
+      fetchTask();
     }
   }, [sortBy]);
 

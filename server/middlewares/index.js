@@ -7,7 +7,7 @@ exports.verifyToken = (req, res, next) => {
     return res.status(403).json({ message: 'Token not provided' });
   }
 
-  jwt.verify(token, config.tokenSecretKey, (err, decoded) => {
+  jwt.verify(token, config.token.tokenSecretKey, (err, decoded) => {
     if (err) {
       if (err.name === 'TokenExpiredError') {
         // Token has expired, try to refresh;
@@ -18,13 +18,13 @@ exports.verifyToken = (req, res, next) => {
           return res.status(401).json({ message: 'Refresh token not provided' });
         }
 
-        jwt.verify(refreshToken, config.refreshTokenSecretKey, (refreshErr, refreshDecoded) => {
+        jwt.verify(refreshToken, config.token.refreshTokenSecretKey, (refreshErr, refreshDecoded) => {
           if (refreshErr) {
             return res.status(401).json({ message: 'Invalid refresh token' });
           }
 
           // If refresh token is valid, generate a new access token
-          const newAccessToken = jwt.sign({ id: refreshDecoded.id }, config.tokenSecretKey, { expiresIn: '24h' });
+          const newAccessToken = jwt.sign({ id: refreshDecoded.id }, config.token.tokenSecretKey, { expiresIn: '24h' });
 
           // Attach the new access token to the response headers
           res.set('New-Access-Token', newAccessToken);

@@ -65,8 +65,8 @@ exports.processLogin = (userName, password) => {
                     };
                 }
                 console.log('password matched')
-                const authToken = jwt.sign({ id: data.userId }, config.tokenSecretKey, { expiresIn: '24h' });
-                const refreshToken = jwt.sign({ id: data.userId }, config.refreshTokenSecretKey, { expiresIn: '7d' });
+                const authToken = jwt.sign({ id: data.userId }, config.token.tokenSecretKey, { expiresIn: '24h' });
+                const refreshToken = jwt.sign({ id: data.userId }, config.token.refreshTokenSecretKey, { expiresIn: '7d' });
                 console.log(authToken);
                 return {
                     authToken,

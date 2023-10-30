@@ -16,10 +16,10 @@ const config = require('../config');
  * Connection Config
  *
  * */
-const mysqlHost = config.host;
-const mysqlUser = config.mysql_user;
-const mysqlPassword = config.mysql_password;
-const mysqlDb = config.mysql_db;
+const mysqlHost = config.database.host;
+const mysqlUser = config.database.mysql_user;
+const mysqlPassword = config.database.mysql_password;
+const mysqlDb = config.database.mysql_db;
 /*
  *
  * Connection Options

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { DatePicker } from "antd";
 import moment from 'moment';
+import { toast } from "react-toastify";
 
 const TaskForm = ({ addTask }) => {
     const [modal, setModal] = useState(false);
@@ -27,6 +28,17 @@ const TaskForm = ({ addTask }) => {
   
     const handleSubmit = (e) => {
       e.preventDefault();
+      if((!title)){
+        toast.error('New Task cannot be created without a title.');
+        return;
+      }else if(!description){
+        toast.error('New Task cannot be created without a description.');
+        return;
+      }
+      else if(!selectedDate){
+        toast.error('New Task cannot be created without a due date.');
+        return;
+      }
       addTask({ title, description, status, priority, selectedDate });
       setTitle("");
       setDescription("");
